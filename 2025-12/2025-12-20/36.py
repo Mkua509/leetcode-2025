@@ -1,11 +1,7 @@
 class Solution(object):
     def isValidSudoku(self, board):
-        """
-        :type board: List[List[str]]
-        :rtype: bool
-        """
 
-        # Check for Row
+        # Check rows
         for row in range(9):
             seen = set()
             for i in range(9):
@@ -15,17 +11,27 @@ class Solution(object):
                     return False
                 seen.add(board[row][i])
 
-
-        # Check for Col
+        # Check columns
         for col in range(9):
             seen = set()
             for i in range(9):
-                if board[col][i] == ".":
+                if board[i][col] == ".":
                     continue
-                if board[col][i] in seen:
+                if board[i][col] in seen:
                     return False
-                seen.add(board[col][i])
+                seen.add(board[i][col])   
 
-        # For Square
+        # Check 3x3 squares
         for square in range(9):
             seen = set()
+            for i in range(3):
+                for j in range(3):
+                    row = (square // 3) * 3 + i
+                    col = (square % 3) * 3 + j
+                    if board[row][col] == ".":
+                        continue
+                    if board[row][col] in seen:
+                        return False
+                    seen.add(board[row][col])
+
+        return True
